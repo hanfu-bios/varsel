@@ -1,0 +1,4 @@
+Package: knockoffs.varsel
+Type: Package
+Title: Model-Free Knockoffs Filter for Controlled Variable Selection
+Version: 0.1.0
