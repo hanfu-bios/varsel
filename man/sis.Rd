@@ -1,16 +1,15 @@
 \name{sis}
 \alias{sis}
-\title{Variable Screening before Selection}
-\description{This function screens the variables before computing their statistics to reduce computing time, especially when p is large.}
+\title{Variable Screening before Selection for Continuous Response}
+\description{When the response is continuous, this function screens the variables before computing their statistics to reduce computing time, especially when p is large.}
 \usage{
-sis(Xaug, y, N = nrow(Xaug), knot = 10, response.type = c("continuous","binomial","survival"))
+sis(Xaug, y, N = nrow(Xaug), knot = 10)
 }
 \arguments{
   \item{Xaug}{augmented design matrix combining original predictors and knockoff variables}
   \item{y}{response vector, or a survival object with two columns}
   \item{N}{number of variables left after screening (default: sample size)}
   \item{knot}{parameter in screening process}
-  \item{response.type}{type of response variable. Either 'continuous', 'binomial', or 'survival'}
 }
 \details{
 Sure Independence Screening (SIS) method is used in this function. The screening process would accelerate computing but not necessarily improve power as true signals might be removed by this process. Our experiment indicates that the power would remain almost the same.

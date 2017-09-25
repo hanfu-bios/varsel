@@ -1,18 +1,23 @@
 
-stat.mboost_varimp2 <- function(Xaug, y, response.type, max.mstop, bl, cv.fold, family){
+stat.mboost_varimp2 <- function(Xaug, y, max.mstop = 100, bl = c("bbs", "bols", "btree"),
+                                cv.fold = 5, family = Gaussian()){
   library(mboost)
   Xaug = as.data.frame(Xaug)
-  if (response.type == "continuous"){
+  check.dist <- function(x) grepl(x,family@name)
+  if (any(unlist(lapply(c("Ada","Binomial","AUC"),check.dist)))) response.type = "binary"
+  else if (any(unlist(lapply(c("Squared Error","Huber","Absolute Err"),check.dist)))) response.type = "continuous"
+  else if (any(unlist(lapply(c("Poisson","Gamma","Multinomial"),check.dist)))) response.type = "discrete"
+  else if (any(unlist(lapply(c("Cox","Weibull","Log Logistic","Lognormal","Gehan","Concordance Probability"),check.dist))))  response.type = "survival"
+  else stop("unknown family")
+
+  if (response.type %in% c("continuous","discrete")){
     Xaug$y = as.vector(y)
-    if(is.null(family)) family = Gaussian()
   }
-  else if (response.type == "binomial"){
+  else if (response.type == "binary"){
     Xaug$y = as.factor(y)
-    if(is.null(family)) family = Binomial()
   }
   else {   # survival
     Xaug$y = y
-    if(is.null(family)) family = CoxPH()
   }
   model = mboost(y ~ ., data = Xaug, control = boost_control(mstop = max.mstop), baselearner = bl, family = family)
   cv10f = cv(model.weights(model), type="kfold", B = cv.fold)

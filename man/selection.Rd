@@ -5,16 +5,16 @@
 This function is the main entry point for the package. It runs the knockoff procedure which accomodates various covariate distributions and model-free associations using gradient boosting, and ultimately provides the selected variables for the input dataset. Users can specify whether to screen variables before selection and the extent of screening.
 }
 \usage{
-knockoffs.varsel(X, y, response.type = c("continuous","binomial","survival"),
+knockoffs.varsel(X, y, family = Gaussian(),
   q=0.10, knockoff.method = c("sdp","asdp"), knockoff.shrink = T,
   screen = T, screening.num = nrow(X), screening.knot = 10,
-  max.mstop = 100, baselearner = c("bbs", "bols", "btree"), cv.fold = 5, family = NULL,
+  max.mstop = 100, baselearner = c("bbs", "bols", "btree"), cv.fold = 5,
   threshold=c('knockoff','knockoff+'))
 }
 \arguments{
   \item{X}{matrix of predictors}
   \item{y}{response vector, or a survival object with two columns}
-  \item{response.type}{type of response variable. Either 'continuous', 'binomial', or 'survival'}
+  \item{family}{Binomial(), Binomial(link = “logit”, type=”glm”), Gaussian(), Poisson(), CoxPH(), Cindex(), GammaReg(), NBinomial(), Weibull(), Loglog(), Lognormal(), etc. See mboost documentation for details.}
   \item{q}{target FDR (false discovery rate)}
   \item{knockoff.method}{method to construct knockoffs, either SDP or approximate SDP}
   \item{knockoff.shrink}{whether to shrink the estimated covariance matrix (default: FALSE)}
@@ -24,7 +24,6 @@ knockoffs.varsel(X, y, response.type = c("continuous","binomial","survival"),
   \item{max.mstop}{maximum number of boosting iteration}
   \item{baselearner}{base-learners when fitting models using mboost. 'bols' means linear base-learners, 'bbs' penalized regression splines with a B-spline basis, and 'btree' boosts stumps.}
   \item{cv.fold}{number of folds in cross-validation to choose number of iteration}
-  \item{family}{Binomial(), Binomial(link = “logit”, type=”glm”), Gaussian(), Poisson(), CoxPH(), Cindex(), GammaReg(), NBinomial(), Weibull(), Loglog(), Lognormal(), etc. See mboost documentation for details.}
   \item{threshold}{method to calculate knockoff threshold, either “knockoff” or “knockoff+”}
 }
 \details{
