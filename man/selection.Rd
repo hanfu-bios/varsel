@@ -5,19 +5,22 @@
 This function is the main entry point for the package. It runs the knockoff procedure which accomodates various covariate distributions and model-free associations using gradient boosting, and ultimately provides the selected variables for the input dataset. Users can specify whether to screen variables before selection and the extent of screening.
 }
 \usage{
-knockoffs.varsel(X, y, family = Gaussian(),
-  q=0.10, knockoff.method = c("sdp","asdp"), knockoff.shrink = T,
+knockoffs.varsel(X, y, X_k, family = Gaussian(),
+  q=0.10, knockoff.method = c("sdp","asdp","svm"), knockoff.shrink = T,
+  stat = c("RRB", "LCD", "DRS"),
   screen = T, screening.num = nrow(X), screening.knot = 10,
   max.mstop = 100, baselearner = c("bbs", "bols", "btree"), cv.fold = 5,
-  threshold=c('knockoff','knockoff+'))
+  threshold=c('knockoff','knockoff+')
 }
 \arguments{
   \item{X}{matrix of predictors}
   \item{y}{response vector, or a survival object with two columns}
+  \item{X_k}{knockoff variables (n by p), if pre-specified}
   \item{family}{Binomial(), Binomial(link = “logit”, type=”glm”), Gaussian(), Poisson(), CoxPH(), Cindex(), GammaReg(), NBinomial(), Weibull(), Loglog(), Lognormal(), etc. See mboost documentation for details.}
   \item{q}{target FDR (false discovery rate)}
-  \item{knockoff.method}{method to construct knockoffs, either SDP or approximate SDP}
+  \item{knockoff.method}{method to construct knockoffs. 'sdp' or 'asdp' means sampling second-order multivariate Gaussian knockoffs via either SDP or approximate SDP. 'svm' means constructing by regression, specifically, by support vector regression}
   \item{knockoff.shrink}{whether to shrink the estimated covariance matrix (default: FALSE)}
+  \item{stat}{statistics measuring variable importance. 'RRB' represents risk reduction in boosting, 'LCD' represents Lasso coefficient difference, and 'DRS' represents difference in R-square (R-squares are obtained from boosting)}
   \item{screen}{whether to screen the variables (default: TRUE)}
   \item{screening.num}{number of variables left after screening (default: sample size)}
   \item{screening.knot}{parameter in screening process}

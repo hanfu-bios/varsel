@@ -1,6 +1,6 @@
 \name{mboost.varimp}
 \alias{mboost.varimp}
-\title{Variable Importance for Boosting}
+\title{Importance statistics based on risk reduction in boosting}
 \description{
 This function provides importance scores for variables (including the knockoffs) in order to compute statistics. The variable importance is measured by in-bag risk reduction per boosting step.
 }

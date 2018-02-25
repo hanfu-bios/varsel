@@ -2,6 +2,7 @@ sis.surv <- function(Xaug, y, N, knot){
   library(splines)
   n = nrow(Xaug)
   GD=NULL
+  list=NULL
   select_SIS=rep(0,ncol(Xaug))
 
     delta = y[,2]; time = y[,1];
@@ -16,12 +17,18 @@ sis.surv <- function(Xaug, y, N, knot){
       result=ddloglik(n,delta,bs8,beta)
       #L1_summary=cbind(L1_summary,result$L1)
       #L2_summary=cbind(L2_summary,result$L2)
-      update=qr.solve(result$L2,result$L1,  tol = 1e-20)
+      r1 <- suppressWarnings(try(update<-qr.solve(result$L2,result$L1,  tol = 1e-20), silent=TRUE))
+      if (class(r1) == "try-error"){
+        GD[j]=0
+        list=c(list,j)
+      }
+      else{
 
       #temp3<-coxph(Surv(time, delta) ~ bs8)
       #update=summary(temp3)$coefficients[,1]
       update=update/sqrt(sum(update^2))
       GD[j]=sum(result$L1*update)
+      }
       #z_spline=cbind(z_spline, bs8)
     }
     select_SIS[rev(order(GD))[1:N]]=1

@@ -1,7 +1,7 @@
 
 stat.mboost_varimp2 <- function(Xaug, y, max.mstop = 100, bl = c("bbs", "bols", "btree"),
                                 cv.fold = 5, family = Gaussian()){
-  library(mboost)
+
   Xaug = as.data.frame(Xaug)
   check.dist <- function(x) grepl(x,family@name)
   if (any(unlist(lapply(c("Ada","Binomial","AUC"),check.dist)))) response.type = "binary"

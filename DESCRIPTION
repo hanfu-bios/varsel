@@ -1,4 +1,8 @@
 Package: knockoffs.varsel
 Type: Package
 Title: Model-Free Knockoffs Filter for Controlled Variable Selection
-Version: 0.1.0
+Version: 0.2.0
+Authors: Han Fu, Hui Jiang, Kevin He, Steven Wang
+Maintainer: Han Fu <hanfu@umich.edu>
+Description: This package contains a generalized model-free knockoffs framework which is a general and powerful tool to perform high-dimensional controlled variable selection.
+Depends: knockoff, mboost, doMC, e1071, glmnet
